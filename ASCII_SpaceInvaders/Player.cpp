@@ -2,8 +2,8 @@
 
 void Player::BeginPlay()
 {
-	PosX = 10;
-	PosY = 18;
+	m_PosX = 10;
+	m_PosY = 18;
 }
 
 void Player::Tick()
@@ -26,65 +26,65 @@ void Player::Tick()
 
 void Player::MoveLeft()
 {
-	if (PosX > 0)
+	if (m_PosX > 0)
 	{
-		PosX--;
+		m_PosX--;
 	}
 }
 
 void Player::MoveRight()
 {
-	if (PosX < 19)
+	if (m_PosX < 19)
 	{
-		PosX++;
+		m_PosX++;
 	}
 }
 
 void Player::Shoot()
 {
-	Bullet* FiredBullet = new Bullet(PosX, PosY - 1, 1);
-	if (BulletHead)
+	Bullet* FiredBullet = new Bullet(m_PosX, m_PosY - 1, 1);
+	if (m_BulletHead)
 	{
-		FiredBullet->InsertBefore(BulletHead);
-		BulletHead = (Bullet*)BulletHead->previous;
+		FiredBullet->InsertBefore(m_BulletHead);
+		m_BulletHead = (Bullet*)m_BulletHead->previous;
 	}
 	else
 	{
-		BulletHead = FiredBullet;
+		m_BulletHead = FiredBullet;
 	}
 }
 
 char Player::GetAvatar()
 {
-	return Avatar;
+	return m_Avatar;
 }
 
 int Player::GetPosX()
 {
-	return PosX;
+	return m_PosX;
 }
 
 void Player::SetPosX(int newPosX)
 {
-	PosX = newPosX;
+	m_PosX = newPosX;
 }
 
 int Player::GetPosY()
 {
-	return PosY;
+	return m_PosY;
 }
 
 void Player::SetPosY(int newPosY)
 {
-	PosY = newPosY;
+	m_PosY = newPosY;
 }
 
 Bullet* Player::GetBullets()
 {
-	return BulletHead;
+	return m_BulletHead;
 }
 
 void Player::SetBulletsNull()
 {
-	BulletHead = nullptr;
+	m_BulletHead = nullptr;
 }

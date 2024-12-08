@@ -5,9 +5,9 @@
 class Player 
 {
 private:
-	char Avatar = 'A';
-	int PosX, PosY;
-	Bullet* BulletHead = nullptr;
+	char m_Avatar = 'A';
+	int m_PosX, m_PosY;
+	Bullet* m_BulletHead = nullptr;
 public:
 	void BeginPlay();
 	void Tick();

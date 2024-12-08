@@ -2,20 +2,20 @@
 
 Bullet::Bullet(int iPosX, int iPosY, int iDirection)
 {
-	PosX = iPosX;
-	PosY = iPosY;
-	Direction = iDirection;
+	m_PosX = iPosX;
+	m_PosY = iPosY;
+	m_Direction = iDirection;
 }
 
 void Bullet::Tick()
 {
-	if (PosY <= 0 || PosY >= 20)
+	if (m_PosY <= 0 || m_PosY >= 20)
 	{
 		bDestroy = true;
 	}
 	else
 	{
-		PosY += (-1) * (Direction);
+		m_PosY += (-1) * (m_Direction);
 	}
 	
 }
@@ -27,17 +27,17 @@ Bullet* Bullet::GetBullet()
 
 char Bullet::GetAvatar()
 {
-	return Avatar;
+	return m_Avatar;
 }
 
 int Bullet::GetPosX()
 {
-	return PosX;
+	return m_PosX;
 }
 
 int Bullet::GetPosY()
 {
-	return PosY;
+	return m_PosY;
 }
 
 void Bullet::Destroy()

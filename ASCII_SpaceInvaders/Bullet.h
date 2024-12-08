@@ -4,9 +4,9 @@
 class Bullet : public Node
 {
 private:
-	char Avatar = '|';
-	int PosX, PosY;
-	int Direction; //1 is up -1 is down
+	char m_Avatar = '|';
+	int m_PosX, m_PosY;
+	int m_Direction; //1 is up -1 is down
 public:
 	bool bDestroy = false;
 	Bullet(int iPosX, int iPosY, int iDirection);
