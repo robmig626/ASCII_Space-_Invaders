@@ -1,0 +1,8 @@
+1. Get Game loop going printing the filed which is a 2D array 40 by 20
+2. Class Player - Avatar, position(X and Y) Abilities: MoveHorizontally, shoot, die 
+3. Class Enemy- Avatar, position(X and Y) Abilities: Move, shoot, die 
+4. Class Bullet - Avatar, position(X and Y) Abilities: Move
+5. Game Manager keeps track of all the enemies on the field in a linked list
+6. Game Manager keeps track of all the player bullets and enemy bullets on the field in separate linked lists.
+7. Input is handled on game tick
+8. Game win condition is handled by having the number of enemies go to zero.
