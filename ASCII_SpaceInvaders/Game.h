@@ -1,14 +1,15 @@
 #pragma once
 #include <iostream>
 #include <Windows.h>
-
-#define FIELDSIZE_X 20
-#define FIELDSIZE_Y 20
+#include "Constants.h"
 
 class Game
 {
+public:
+	Game();
 private:
 	bool m_bGameOver = false;
+	bool m_bWin = false;
 	char m_GameField[FIELDSIZE_X][FIELDSIZE_Y];
 
 	class Player* m_PlayerShip;
@@ -18,11 +19,14 @@ private:
 	class EnemyBase* m_Enemies;
 	class Bullet* m_EnemyBullets;
 
+	
+
 	void InitializeField();
 	void UpdateField();
 	void RenderField();
 
 	void ClearDyingBullets();
+	void ClearDyingEnemies();
 
 	void LoadLevel(int Level);
 	void SpawnEnemy(int X, int Y, char Avatar);

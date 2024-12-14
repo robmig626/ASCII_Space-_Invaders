@@ -54,12 +54,12 @@ void Player::Shoot()
 	}
 }
 
-char Player::GetAvatar()
+char Player::GetAvatar() const
 {
 	return m_Avatar;
 }
 
-int Player::GetPosX()
+int Player::GetPosX() const
 {
 	return m_PosX;
 }
@@ -69,7 +69,7 @@ void Player::SetPosX(int newPosX)
 	m_PosX = newPosX;
 }
 
-int Player::GetPosY()
+int Player::GetPosY() const
 {
 	return m_PosY;
 }
@@ -79,7 +79,7 @@ void Player::SetPosY(int newPosY)
 	m_PosY = newPosY;
 }
 
-Bullet* Player::GetBullets()
+Bullet* Player::GetBullets() const
 {
 	return m_BulletHead;
 }
@@ -87,4 +87,14 @@ Bullet* Player::GetBullets()
 void Player::SetBulletsNull()
 {
 	m_BulletHead = nullptr;
+}
+
+int Player::GetLives() const
+{
+	return m_Lives;
+}
+
+void Player::TakeDamage()
+{
+	m_Lives--;
 }

@@ -48,8 +48,8 @@ void Node::Append(Node* target)
 
 	if (LastNode)
 	{
-		previous = LastNode;
 		LastNode->next = this;
+		previous = LastNode;
 		next = nullptr;
 	}
 }

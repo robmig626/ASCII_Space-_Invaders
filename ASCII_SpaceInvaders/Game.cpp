@@ -1,6 +1,13 @@
+#include "Constants.h"
 #include "Game.h"
 #include "Player.h"
 #include "EnemyBase.h"
+
+Game::Game()
+{
+	m_bGameOver = false;
+	m_bWin = false;
+}
 
 void Game::InitializeField()
 {
@@ -21,9 +28,9 @@ void Game::UpdateField()
 	m_GameField[m_PlayerShip->GetPosX()][m_PlayerShip->GetPosY()] = m_PlayerShip->GetAvatar();
 
 	//Draw Bullets
-	if (m_PlayerShip->GetBullets())
+	if (m_PlayerBullets)
 	{
-		Bullet* nextBullet = m_PlayerShip->GetBullets();
+		Bullet* nextBullet = m_PlayerBullets;
 		while (nextBullet != nullptr)
 		{
 			m_GameField[nextBullet->GetPosX()][nextBullet->GetPosY()] = nextBullet->GetAvatar();
@@ -42,16 +49,16 @@ void Game::UpdateField()
 		}
 	}
 
-	////Draw Enemy Bullets
-	//if (m_EnemyBullets)
-	//{
-	//	Bullet* nextBullet = m_EnemyBullets;
-	//	while (nextBullet != nullptr)
-	//	{
-	//		m_GameField[nextBullet->GetPosX()][nextBullet->GetPosY()] = nextBullet->GetAvatar();
-	//		nextBullet = (Bullet*)nextBullet->next;
-	//	}
-	//}
+	//Draw Enemy Bullets
+	if (m_EnemyBullets)
+	{
+		Bullet* nextBullet = m_EnemyBullets;
+		while (nextBullet != nullptr)
+		{
+			m_GameField[nextBullet->GetPosX()][nextBullet->GetPosY()] = nextBullet->GetAvatar();
+			nextBullet = (Bullet*)nextBullet->next;
+		}
+	}
 }
 
 void Game::RenderField()
@@ -68,16 +75,17 @@ void Game::RenderField()
 
 void Game::ClearDyingBullets()
 {
-	Bullet* nextBullet = m_PlayerShip->GetBullets();
+	Bullet* nextBullet = m_PlayerBullets;
 	Bullet* DyingBullet = nullptr;
 	while (nextBullet != nullptr)
 	{
 		if (nextBullet->bDestroy)
 		{
 			DyingBullet = nextBullet;
-			if (nextBullet == m_PlayerShip->GetBullets() && nextBullet->next == nullptr)
+			if (nextBullet == m_PlayerBullets && nextBullet->next == nullptr)
 			{
 				m_PlayerShip->SetBulletsNull();
+				m_PlayerBullets = nullptr;
 			}
 			nextBullet = (Bullet*)nextBullet->next;
 			DyingBullet->Destroy();
@@ -86,6 +94,37 @@ void Game::ClearDyingBullets()
 		else
 		{
 			nextBullet = (Bullet*)nextBullet->next;
+		}
+	}
+}
+
+void Game::ClearDyingEnemies()
+{
+ 	EnemyBase* nextEnemy = m_Enemies;
+	EnemyBase* DyingEnemy = nullptr;
+	while (nextEnemy != nullptr)
+	{
+		if (nextEnemy->bDestroy)
+		{
+   			DyingEnemy = nextEnemy;
+			if (DyingEnemy == m_Enemies)
+			{
+   				if (DyingEnemy->next == nullptr)
+				{
+					m_Enemies = nullptr;
+				}
+				else
+				{
+					m_Enemies = (EnemyBase*)m_Enemies->next;
+				}
+			}
+			nextEnemy = (EnemyBase*)nextEnemy->next;
+			DyingEnemy->Destroy();
+			delete(DyingEnemy);
+		}
+		else
+		{
+			nextEnemy = (EnemyBase*)nextEnemy->next;
 		}
 	}
 }
@@ -152,8 +191,25 @@ void Game::Tick()
 	if (m_Enemies)
 	{
 		EnemyBase* nextEnemy = m_Enemies;
+
 		while (nextEnemy != nullptr)
 		{
+			Bullet* nextBullet = m_PlayerBullets;
+			while (nextBullet != nullptr)
+			{
+				//Collision Check
+				if (nextBullet->GetPosX() == nextEnemy->GetPosX() && nextBullet->GetPosY() == nextEnemy->GetPosY())
+				{
+					nextEnemy->TakeDamage();
+					nextBullet->bDestroy = true;
+
+					if (nextEnemy->GetHealth() <= 0)
+					{
+						nextEnemy->bDestroy = true;
+					}
+				}
+				nextBullet = (Bullet*)nextBullet->next;
+			}
 			nextEnemy->Tick();
 			nextEnemy = (EnemyBase*)nextEnemy->next;
 		}
@@ -167,11 +223,21 @@ void Game::Tick()
 			}
 		}
 	}
+	
+	//Clean up
+	ClearDyingBullets();
+	ClearDyingEnemies();
 
 	//Handle the printing of the game field
-	ClearDyingBullets();
 	UpdateField();
 	RenderField();
+
+	//Win condition
+	if (m_Enemies == nullptr)
+	{
+		m_bGameOver = true;
+	}
+
 }
 
 bool Game::GetGameOver()

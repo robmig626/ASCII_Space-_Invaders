@@ -8,6 +8,8 @@ private:
 	char m_Avatar = 'A';
 	int m_PosX, m_PosY;
 	Bullet* m_BulletHead = nullptr;
+	int m_Lives;
+
 public:
 	void BeginPlay();
 	void Tick();
@@ -16,11 +18,13 @@ public:
 	void MoveRight();
 	void Shoot();
 
-	char GetAvatar();
-	int GetPosX();
+	char GetAvatar() const;
+	int GetPosX() const;
 	void SetPosX(int newPosX);
-	int GetPosY();
+	int GetPosY() const;
 	void SetPosY(int newPosY);
-	Bullet* GetBullets();
+	Bullet* GetBullets() const;
 	void SetBulletsNull();
+	int GetLives() const;
+	void TakeDamage();
 };
